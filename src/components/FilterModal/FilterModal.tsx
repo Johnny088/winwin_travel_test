@@ -10,10 +10,7 @@ import {
 	selectIsConfirmModalOpen,
 	selectResetFilters,
 	selectSetConfirmModalState,
-	selectSetFilters,
 	selectSetModalState,
-	selectSetTempFilters,
-	selectTempFilters,
 	useFilterStore
 } from '@/stores/filterStore'
 
@@ -29,14 +26,11 @@ export const FilterModal = () => {
 
 	const [tempFilters, setTempFilters] = useState<SearchRequestFilter | []>([])
 
-	const setFilters = useFilterStore(selectSetFilters)
 	const resetFilters = useFilterStore(selectResetFilters)
 	const setIsModalOpen = useFilterStore(selectSetModalState)
 
 	const isConfirmModalOpen = useFilterStore(selectIsConfirmModalOpen)
 	const setConfirmModal = useFilterStore(selectSetConfirmModalState)
-	// const tempFilters = useFilterStore(selectTempFilters)
-	// const setTempFilters = useFilterStore(selectSetTempFilters)
 
 	const formHandler = (values: FormData) => {
 		const uniqueKeys = Array.from(new Set(values.keys()))
@@ -49,14 +43,8 @@ export const FilterModal = () => {
 			}))
 			.filter(filterItem => filterItem.optionsIds.length > 0)
 
-		// console.log(data)
-		// setFilters(data)
-
 		setTempFilters(data)
 		setConfirmModal(true)
-		// queryClient.setQueryData(['filters'], data)
-
-		// setIsModalOpen(false)
 	}
 
 	const formRef = useRef<HTMLFormElement>(null)
@@ -114,8 +102,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="preliminaryFilter"
-								defaultChecked={isChecked('preliminaryFilter', 'dist1km')}
-								value="dist1km"
+								defaultChecked={isChecked(
+									'preliminaryFilter',
+									'Distance to the center 1 km'
+								)}
+								value="Distance to the center 1 km"
 								className={inputClass}
 							/>
 							{t('filterModal.distanceToCenter1km')}
@@ -124,8 +115,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="preliminaryFilter"
-								defaultChecked={isChecked('preliminaryFilter', 'rating9+')}
-								value="rating9+"
+								defaultChecked={isChecked(
+									'preliminaryFilter',
+									'Guest rating 9+'
+								)}
+								value="Guest rating 9+"
 								className={inputClass}
 							/>
 							{t('filterModal.guestrating9Plus')}
@@ -134,8 +128,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="preliminaryFilter"
-								defaultChecked={isChecked('preliminaryFilter', 'hotels')}
-								value="hotels"
+								defaultChecked={isChecked('preliminaryFilter', 'Hotels')}
+								value="Hotels"
 								className={inputClass}
 							/>
 							{t('filterModal.hotels')}
@@ -144,8 +138,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="preliminaryFilter"
-								defaultChecked={isChecked('preliminaryFilter', 'dist3km')}
-								value="dist3km"
+								defaultChecked={isChecked(
+									'preliminaryFilter',
+									'Distance to the center 3 km'
+								)}
+								value="Distance to the center 3 km"
 								className={inputClass}
 							/>
 							{t('filterModal.distanceToCenter3km')}
@@ -154,8 +151,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="preliminaryFilter"
-								defaultChecked={isChecked('preliminaryFilter', 'fiveStars')}
-								value="fiveStars"
+								defaultChecked={isChecked('preliminaryFilter', '5 stars')}
+								value="5 stars"
 								className={inputClass}
 							/>
 							{t('filterModal.fiveStars')}
@@ -164,8 +161,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="preliminaryFilter"
-								defaultChecked={isChecked('preliminaryFilter', 'hasBreakfast')}
-								value="hasBreakfast"
+								defaultChecked={isChecked(
+									'preliminaryFilter',
+									'Breakfast is included'
+								)}
+								value="Breakfast is included"
 								className={inputClass}
 							/>
 							{t('filterModal.breakfastIsIncluded')}
@@ -179,8 +179,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="popularFilters"
-								defaultChecked={isChecked('popularFilters', 'fiveStars')}
-								value="fiveStars"
+								defaultChecked={isChecked('popularFilters', '5 stars')}
+								value="5 stars"
 								className={inputClass}
 							/>
 							{t('filterModal.fiveStars')}
@@ -189,8 +189,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="popularFilters"
-								defaultChecked={isChecked('popularFilters', 'hasBreakfast')}
-								value="hasBreakfast"
+								defaultChecked={isChecked(
+									'popularFilters',
+									'Breakfast is included'
+								)}
+								value="Breakfast is included"
 								className={inputClass}
 							/>
 							{t('filterModal.breakfastIsIncluded')}
@@ -199,8 +202,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="popularFilters"
-								defaultChecked={isChecked('popularFilters', 'freeBooking')}
-								value="freeBooking"
+								defaultChecked={isChecked('popularFilters', 'Free booking')}
+								value="Free booking"
 								className={inputClass}
 							/>
 							{t('filterModal.freeBooking')}
@@ -209,8 +212,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="popularFilters"
-								defaultChecked={isChecked('popularFilters', 'fourStars')}
-								value="fourStars"
+								defaultChecked={isChecked('popularFilters', '4 stars')}
+								value="4 stars"
 								className={inputClass}
 							/>
 							{t('filterModal.fourStars')}
@@ -219,8 +222,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="popularFilters"
-								defaultChecked={isChecked('popularFilters', '4stars')}
-								value="dist_3km"
+								defaultChecked={isChecked(
+									'popularFilters',
+									'Distance to the center 3 km'
+								)}
+								value="Distance to the center 3 km"
 								className={inputClass}
 							/>
 							{t('filterModal.distanceToCenter3km')}
@@ -229,8 +235,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="popularFilters"
-								defaultChecked={isChecked('popularFilters', 'rating8+')}
-								value="rating8+"
+								defaultChecked={isChecked('popularFilters', 'Guest rating 8+')}
+								value="Guest rating 8+"
 								className={inputClass}
 							/>
 							{t('filterModal.guestRatingEightPlus')}
@@ -244,8 +250,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'hasTransfer')}
-								value="hasTransfer"
+								defaultChecked={isChecked(
+									'amenities',
+									'Transfer to/from the hotel'
+								)}
+								value="Transfer to/from the hotel"
 								className={inputClass}
 							/>
 							{t('filterModal.transferToFromTheHotel')}
@@ -254,8 +263,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'hasBreakfast')}
-								value="hasBreakfast"
+								defaultChecked={isChecked('amenities', 'Breakfast included')}
+								value="Breakfast included"
 								className={inputClass}
 							/>
 							{t('filterModal.breakfastIncluded')}
@@ -264,8 +273,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'SmokingArea')}
-								value="SmokingArea"
+								defaultChecked={isChecked('amenities', 'Smoking area')}
+								value="Smoking area"
 								className={inputClass}
 							/>
 							{t('filterModal.smokingArea')}
@@ -274,8 +283,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', '24hReception')}
-								value="24hReception"
+								defaultChecked={isChecked(
+									'amenities',
+									'Round-the-clock reception'
+								)}
+								value="Round-the-clock reception"
 								className={inputClass}
 							/>
 							{t('filterModal.roundTheClockReception')}
@@ -284,8 +296,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'restaurant')}
-								value="restaurant"
+								defaultChecked={isChecked('amenities', 'Restaurant')}
+								value="Restaurant"
 								className={inputClass}
 							/>
 							{t('filterModal.restaurant')}
@@ -294,8 +306,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'kidsPlayground')}
-								value="kidsPlayground"
+								defaultChecked={isChecked('amenities', "Children's playground")}
+								value="Children's playground"
 								className={inputClass}
 							/>
 							{t('filterModal.kidsPlayground')}
@@ -304,8 +316,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'earlyCheckIn')}
-								value="earlyCheckIn"
+								defaultChecked={isChecked('amenities', 'Early check-in')}
+								value="Early check-in"
 								className={inputClass}
 							/>
 							{t('filterModal.earlyCheckIn')}
@@ -314,8 +326,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'swimmingPool')}
-								value="swimmingPool"
+								defaultChecked={isChecked('amenities', 'Swimming pool')}
+								value="Swimming pool"
 								className={inputClass}
 							/>
 							{t('filterModal.swimmingPool')}
@@ -324,8 +336,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'internet')}
-								value="internet"
+								defaultChecked={isChecked('amenities', 'Internet')}
+								value="Internet"
 								className={inputClass}
 							/>
 							{t('filterModal.internet')}
@@ -334,8 +346,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'lateCheckIn')}
-								value="lateCheckIn"
+								defaultChecked={isChecked('amenities', 'Late check-in')}
+								value="Late check-in"
 								className={inputClass}
 							/>
 							{t('filterModal.lateCheckIn')}
@@ -344,8 +356,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'spa')}
-								value="spa"
+								defaultChecked={isChecked('amenities', 'Spa center/sauna')}
+								value="Spa center/sauna"
 								className={inputClass}
 							/>
 							{t('filterModal.spa')}
@@ -354,8 +366,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'security')}
-								value="security"
+								defaultChecked={isChecked('amenities', 'Security')}
+								value="Security"
 								className={inputClass}
 							/>
 							{t('filterModal.security')}
@@ -364,8 +376,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'isPetsAllowed')}
-								value="isPetsAllowed"
+								defaultChecked={isChecked('amenities', 'Pets are allowed')}
+								value="Pets are allowed"
 								className={inputClass}
 							/>
 							{t('filterModal.petsAreAllowed')}
@@ -374,8 +386,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'gym')}
-								value="gym"
+								defaultChecked={isChecked('amenities', 'Gym/fitness room')}
+								value="Gym/fitness room"
 								className={inputClass}
 							/>
 							{t('filterModal.gym')}
@@ -384,8 +396,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'lift')}
-								value="lift"
+								defaultChecked={isChecked('amenities', 'Lift')}
+								value="Lift"
 								className={inputClass}
 							/>
 							{t('filterModal.lift')}
@@ -394,8 +406,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'parking')}
-								value="parking"
+								defaultChecked={isChecked('amenities', 'Parking')}
+								value="Parking"
 								className={inputClass}
 							/>
 							{t('filterModal.parking')}
@@ -404,8 +416,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'conferenceRooms')}
-								value="conferenceRooms"
+								defaultChecked={isChecked('amenities', 'Conference rooms')}
+								value="Conference rooms"
 								className={inputClass}
 							/>
 							{t('filterModal.conferenceRooms')}
@@ -414,8 +426,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenities"
-								defaultChecked={isChecked('amenities', 'ecoResponsibility')}
-								value="ecoResponsibility"
+								defaultChecked={isChecked('amenities', 'Eco-responsibility')}
+								value="Eco-responsibility"
 								className={inputClass}
 							/>
 							{t('filterModal.ecoResponsibility')}
@@ -431,9 +443,9 @@ export const FilterModal = () => {
 								name="amenitiesDisabilities"
 								defaultChecked={isChecked(
 									'amenitiesDisabilities',
-									'entranceWithoutSteps'
+									'Entrance without steps'
 								)}
-								value="entranceWithoutSteps"
+								value="Entrance without steps"
 								className={inputClass}
 							/>
 							{t('filterModal.entranceWithoutSteps')}
@@ -442,8 +454,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenitiesDisabilities"
-								defaultChecked={isChecked('amenitiesDisabilities', 'parking')}
-								value="parking"
+								defaultChecked={isChecked('amenitiesDisabilities', 'Parking')}
+								value="Parking"
 								className={inputClass}
 							/>
 							{t('filterModal.parking')}
@@ -452,8 +464,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenitiesDisabilities"
-								defaultChecked={isChecked('amenitiesDisabilities', 'lift')}
-								value="lift"
+								defaultChecked={isChecked('amenitiesDisabilities', 'Lift')}
+								value="Lift"
 								className={inputClass}
 							/>
 							{t('filterModal.lift')}
@@ -464,9 +476,9 @@ export const FilterModal = () => {
 								name="amenitiesDisabilities"
 								defaultChecked={isChecked(
 									'amenitiesDisabilities',
-									'EntranceEightyOnewide'
+									'Entrance 81 cm wide'
 								)}
-								value="EntranceEightyOnewide"
+								value="Entrance 81 cm wide"
 								className={inputClass}
 							/>
 							{t('filterModal.entrance81CmWide')}
@@ -475,8 +487,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenitiesDisabilities"
-								defaultChecked={isChecked('amenitiesDisabilities', 'ramp')}
-								value="ramp"
+								defaultChecked={isChecked(
+									'amenitiesDisabilities',
+									'Availability of a ramp'
+								)}
+								value="Availability of a ramp"
 								className={inputClass}
 							/>
 							{t('filterModal.availabilityOfRamp')}
@@ -485,8 +500,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="amenitiesDisabilities"
-								defaultChecked={isChecked('amenitiesDisabilities', 'handrails')}
-								value="handrails"
+								defaultChecked={isChecked('amenitiesDisabilities', 'Handrails')}
+								value="Handrails"
 								className={inputClass}
 							/>
 							{t('filterModal.handrails')}
@@ -500,8 +515,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'bath')}
-								value="bath"
+								defaultChecked={isChecked('roomFacilities', 'Bath')}
+								value="Bath"
 								className={inputClass}
 							/>
 							{t('filterModal.bath')}
@@ -510,8 +525,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'kitchen')}
-								value="kitchen"
+								defaultChecked={isChecked('roomFacilities', 'Kitchen')}
+								value="Kitchen"
 								className={inputClass}
 							/>
 							{t('filterModal.kitchen')}
@@ -522,9 +537,9 @@ export const FilterModal = () => {
 								name="roomFacilities"
 								defaultChecked={isChecked(
 									'roomFacilities',
-									'underfloorHeating'
+									'Underfloor heating'
 								)}
-								value="underfloorHeating"
+								value="Underfloor heating"
 								className={inputClass}
 							/>
 							{t('filterModal.underfloorHeating')}
@@ -533,8 +548,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'shower')}
-								value="shower"
+								defaultChecked={isChecked('roomFacilities', 'Shower')}
+								value="Shower"
 								className={inputClass}
 							/>
 							{t('filterModal.shower')}
@@ -543,8 +558,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'airConditioning')}
-								value="airConditioning"
+								defaultChecked={isChecked('roomFacilities', 'Air Conditioning')}
+								value="Air Conditioning"
 								className={inputClass}
 							/>
 							{t('filterModal.airConditioning')}
@@ -553,8 +568,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'petsAllowed')}
-								value="petsAllowed"
+								defaultChecked={isChecked('roomFacilities', 'Pets allowed')}
+								value="Pets allowed"
 								className={inputClass}
 							/>
 							{t('filterModal.petsAllowedSecondOption')}
@@ -563,8 +578,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'coffeeMachine')}
-								value="coffeeMachine"
+								defaultChecked={isChecked('roomFacilities', 'Coffee machine')}
+								value="Coffee machine"
 								className={inputClass}
 							/>
 							{t('filterModal.coffeeMachine')}
@@ -573,8 +588,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'iron')}
-								value="iron"
+								defaultChecked={isChecked('roomFacilities', 'Iron')}
+								value="Iron"
 								className={inputClass}
 							/>
 							{t('filterModal.iron')}
@@ -583,8 +598,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'babyBed')}
-								value="babyBed"
+								defaultChecked={isChecked('roomFacilities', 'Baby bed')}
+								value="Baby bed"
 								className={inputClass}
 							/>
 							{t('filterModal.babyBed')}
@@ -593,8 +608,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'kettle')}
-								value="kettle"
+								defaultChecked={isChecked('roomFacilities', 'Kettle')}
+								value="Kettle"
 								className={inputClass}
 							/>
 							{t('filterModal.kettle')}
@@ -603,8 +618,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'internet')}
-								value="internet"
+								defaultChecked={isChecked('roomFacilities', 'Internet')}
+								value="Internet"
 								className={inputClass}
 							/>
 							{t('filterModal.internet')}
@@ -613,8 +628,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'balcony')}
-								value="balcony"
+								defaultChecked={isChecked('roomFacilities', 'Balcony')}
+								value="Balcony"
 								className={inputClass}
 							/>
 							{t('filterModal.balcony')}
@@ -623,8 +638,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'fridge')}
-								value="fridge"
+								defaultChecked={isChecked('roomFacilities', 'Fridge')}
+								value="Fridge"
 								className={inputClass}
 							/>
 							{t('filterModal.fridge')}
@@ -633,8 +648,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomFacilities"
-								defaultChecked={isChecked('roomFacilities', 'workplace')}
-								value="workplace"
+								defaultChecked={isChecked('roomFacilities', 'Workplace')}
+								value="Workplace"
 								className={inputClass}
 							/>
 							{t('filterModal.workplace')}
@@ -650,9 +665,9 @@ export const FilterModal = () => {
 								name="roomWithDisabilities"
 								defaultChecked={isChecked(
 									'roomWithDisabilities',
-									'entranceWide81'
+									'Main door entrance width 81 cm'
 								)}
-								value="entranceWide81"
+								value="Main door entrance width 81 cm"
 								className={inputClass}
 							/>
 							{t('filterModal.entranceWide81')}
@@ -663,9 +678,9 @@ export const FilterModal = () => {
 								name="roomWithDisabilities"
 								defaultChecked={isChecked(
 									'roomWithDisabilities',
-									'handrailInShower'
+									'Handrail in the shower'
 								)}
-								value="handrailInShower"
+								value="Handrail in the shower"
 								className={inputClass}
 							/>
 							{t('filterModal.handrailInShower')}
@@ -676,9 +691,9 @@ export const FilterModal = () => {
 								name="roomWithDisabilities"
 								defaultChecked={isChecked(
 									'roomWithDisabilities',
-									'highToiletBowl'
+									'High toilet bowl'
 								)}
-								value="highToiletBowl"
+								value="High toilet bowl"
 								className={inputClass}
 							/>
 							{t('filterModal.highToiletBowl')}
@@ -687,8 +702,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="roomWithDisabilities"
-								defaultChecked={isChecked('roomWithDisabilities', 'doorWide81')}
-								value="doorWide81"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'Interior door width 81 cm'
+								)}
+								value="Interior door width 81 cm"
 								className={inputClass}
 							/>
 							{t('filterModal.doorWide81')}
@@ -699,9 +717,9 @@ export const FilterModal = () => {
 								name="roomWithDisabilities"
 								defaultChecked={isChecked(
 									'roomWithDisabilities',
-									'showerChair'
+									'Bath/shower chair'
 								)}
-								value="showerChair"
+								value="Bath/shower chair"
 								className={inputClass}
 							/>
 							{t('filterModal.showerChair')}
@@ -712,9 +730,9 @@ export const FilterModal = () => {
 								name="roomWithDisabilities"
 								defaultChecked={isChecked(
 									'roomWithDisabilities',
-									'emergencyCord'
+									'Emergency cord in the bathroom'
 								)}
-								value="emergencyCord"
+								value="Emergency cord in the bathroom"
 								className={inputClass}
 							/>
 							{t('filterModal.emergencyCord')}
@@ -725,9 +743,9 @@ export const FilterModal = () => {
 								name="roomWithDisabilities"
 								defaultChecked={isChecked(
 									'roomWithDisabilities',
-									'handrailNearToilet'
+									'Handrail near the toilet'
 								)}
-								value="handrailNearToilet"
+								value="Handrail near the toilet"
 								className={inputClass}
 							/>
 							{t('filterModal.handrailNearToilet')}
@@ -738,9 +756,9 @@ export const FilterModal = () => {
 								name="roomWithDisabilities"
 								defaultChecked={isChecked(
 									'roomWithDisabilities',
-									'lowWashbasin'
+									'Low washbasin'
 								)}
-								value="lowWashbasin"
+								value="Low washbasin"
 								className={inputClass}
 							/>
 							{t('filterModal.lowWashbasin')}
@@ -751,9 +769,9 @@ export const FilterModal = () => {
 								name="roomWithDisabilities"
 								defaultChecked={isChecked(
 									'roomWithDisabilities',
-									'emergencyCordBedside'
+									'Emergency cord by the bedside'
 								)}
-								value="emergencyCordBedside"
+								value="Emergency cord by the bedside"
 								className={inputClass}
 							/>
 							{t('filterModal.emergencyCordBedside')}
@@ -767,8 +785,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="nutrition"
-								defaultChecked={isChecked('nutrition', 'withoutMeal')}
-								value="withoutMeal"
+								defaultChecked={isChecked('nutrition', 'Room without meals')}
+								value="Room without meals"
 								className={inputClass}
 							/>
 							{t('filterModal.roomWithoutMeals')}
@@ -777,8 +795,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="nutrition"
-								defaultChecked={isChecked('nutrition', 'BreakfastAndDinner')}
-								value="BreakfastAndDinner"
+								defaultChecked={isChecked('nutrition', 'Breakfast and dinner')}
+								value="Breakfast and dinner"
 								className={inputClass}
 							/>
 							{t('filterModal.breakfastAndDinner')}
@@ -787,8 +805,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="nutrition"
-								defaultChecked={isChecked('nutrition', 'allInclusive')}
-								value="allInclusive"
+								defaultChecked={isChecked('nutrition', 'All inclusive')}
+								value="All inclusive"
 								className={inputClass}
 							/>
 							{t('filterModal.allInclusive')}
@@ -797,8 +815,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="nutrition"
-								defaultChecked={isChecked('nutrition', 'breakfastIncluded')}
-								value="breakfastIncluded"
+								defaultChecked={isChecked('nutrition', 'Breakfast included')}
+								value="Breakfast included"
 								className={inputClass}
 							/>
 							{t('filterModal.breakfastIncluded')}
@@ -807,8 +825,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="nutrition"
-								defaultChecked={isChecked('nutrition', 'BreakfastLunchDinner')}
-								value="BreakfastLunchDinner"
+								defaultChecked={isChecked(
+									'nutrition',
+									'Breakfast, lunch, dinner'
+								)}
+								value="Breakfast, lunch, dinner"
 								className={inputClass}
 							/>
 							{t('filterModal.breakfastLunchDinner')}
@@ -817,8 +838,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="nutrition"
-								defaultChecked={isChecked('nutrition', 'ultraAllInclusive')}
-								value="ultraAllInclusive"
+								defaultChecked={isChecked('nutrition', 'Ultra all inclusive')}
+								value="Ultra all inclusive"
 								className={inputClass}
 							/>
 							{t('filterModal.ultraAllInclusive')}
@@ -832,8 +853,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="reservation"
-								defaultChecked={isChecked('reservation', 'cancellationFree')}
-								value="cancellationFree"
+								defaultChecked={isChecked(
+									'reservation',
+									'Free cancellation before check-in'
+								)}
+								value="Free cancellation before check-in"
 								className={inputClass}
 							/>
 							{t('filterModal.cancellationFree')}
@@ -844,9 +868,9 @@ export const FilterModal = () => {
 								name="reservation"
 								defaultChecked={isChecked(
 									'reservation',
-									'cancellationOneWeekFree'
+									'Free cancellation one week before check-in'
 								)}
-								value="cancellationOneWeekFree"
+								value="Free cancellation one week before check-in"
 								className={inputClass}
 							/>
 							{t('filterModal.cancellationOneWeekFree')}
@@ -857,9 +881,9 @@ export const FilterModal = () => {
 								name="reservation"
 								defaultChecked={isChecked(
 									'reservation',
-									'cancellationThreeDaysFree'
+									'Free cancellation up to 3 days before check-in'
 								)}
-								value="cancellationThreeDaysFree"
+								value="Free cancellation up to 3 days before check-in"
 								className={inputClass}
 							/>
 							{t('filterModal.cancellationThreeDaysFree')}
@@ -870,9 +894,9 @@ export const FilterModal = () => {
 								name="reservation"
 								defaultChecked={isChecked(
 									'reservation',
-									'cancellationNotAllowed'
+									'No possibility of cancellation'
 								)}
-								value="cancellationNotAllowed"
+								value="No possibility of cancellation"
 								className={inputClass}
 							/>
 							{t('filterModal.cancellationNotAllowed')}
@@ -886,8 +910,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="prepayment"
-								defaultChecked={isChecked('prepayment', 'withoutCreditCard')}
-								value="withoutCreditCard"
+								defaultChecked={isChecked(
+									'prepayment',
+									'Booking without a credit card'
+								)}
+								value="Booking without a credit card"
 								className={inputClass}
 							/>
 							{t('filterModal.bookingWithoutCreditCard')}
@@ -896,8 +923,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="prepayment"
-								defaultChecked={isChecked('prepayment', 'partialPrepayment')}
-								value="partialPrepayment"
+								defaultChecked={isChecked('prepayment', 'Partial prepayment')}
+								value="Partial prepayment"
 								className={inputClass}
 							/>
 							{t('filterModal.partialPrepayment')}
@@ -906,8 +933,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="prepayment"
-								defaultChecked={isChecked('prepayment', 'withoutPrepayment')}
-								value="withoutPrepayment"
+								defaultChecked={isChecked(
+									'prepayment',
+									'Booking without prepayment'
+								)}
+								value="Booking without prepayment"
 								className={inputClass}
 							/>
 							{t('filterModal.bookingWithoutPrepayment')}
@@ -916,8 +946,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="prepayment"
-								defaultChecked={isChecked('prepayment', 'fullPrepayment')}
-								value="fullPrepayment"
+								defaultChecked={isChecked('prepayment', 'Full prepayment')}
+								value="Full prepayment"
 								className={inputClass}
 							/>
 							{t('filterModal.fullPrepayment')}
@@ -932,8 +962,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="payment"
-								defaultChecked={isChecked('payment', 'paymentInCash')}
-								value="paymentInCash"
+								defaultChecked={isChecked('payment', 'Payment in cash')}
+								value="Payment in cash"
 								className={inputClass}
 							/>
 							{t('filterModal.paymentInCash')}
@@ -942,8 +972,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="payment"
-								defaultChecked={isChecked('payment', 'paymentByCard')}
-								value="paymentByCard"
+								defaultChecked={isChecked('payment', 'Payment by card')}
+								value="Payment by card"
 								className={inputClass}
 							/>
 							{t('filterModal.paymentByCard')}
@@ -958,11 +988,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="specialOffers"
-								defaultChecked={isChecked(
-									'specialOffers',
-									'discountsFiftyPersents'
-								)}
-								value="discountsFiftyPersents"
+								defaultChecked={isChecked('specialOffers', 'Discounts of 50%')}
+								value="Discounts of 50%"
 								className={inputClass}
 							/>
 							{t('filterModal.discountsFiftyPersents')}
@@ -971,8 +998,8 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="specialOffers"
-								defaultChecked={isChecked('specialOffers', 'hotOffers')}
-								value="hotOffers"
+								defaultChecked={isChecked('specialOffers', 'Hot offers')}
+								value="Hot offers"
 								className={inputClass}
 							/>
 							{t('filterModal.hotOffers')}
@@ -981,8 +1008,11 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="specialOffers"
-								defaultChecked={isChecked('specialOffers', 'cheapRelocation')}
-								value="cheapRelocation"
+								defaultChecked={isChecked(
+									'specialOffers',
+									'Cheap options for relocation'
+								)}
+								value="Cheap options for relocation"
 								className={inputClass}
 							/>
 							{t('filterModal.cheapOptionsForRelocation')}

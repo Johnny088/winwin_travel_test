@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { createPortal } from 'react-dom'
+import { useTranslation } from 'react-i18next'
 
 import { queryClient } from '@/query'
 import { SearchRequestFilter } from '@/shared/api/types/SearchRequest/SearchRequestFilter'
@@ -17,6 +18,8 @@ interface Props {
 export const ConfirmModal = ({ data }: Props) => {
 	const setIsModalOpen = useFilterStore(selectSetModalState)
 	const setIsConfirmModalOpen = useFilterStore(selectSetConfirmModalState)
+
+	const { t } = useTranslation('filter')
 
 	const setFIlters = useFilterStore(selectSetFilters)
 
@@ -51,7 +54,7 @@ export const ConfirmModal = ({ data }: Props) => {
 		<div className="flex justify-center min-h-screen z-[60] inset-0 backdrop-blur-xl fixed w-screen">
 			<div className="bg-white flex flex-col items-center fixed justify-center w-7xl rounded-2xl p-8">
 				<h2 className="mb-30 text-[40px] text-['#31393C'] ">
-					Do you want to apply new filter
+					{t('confirmModal.requestConfirmNewFilter')}
 				</h2>
 				<ul className="flex justify-center">
 					<li>
@@ -60,7 +63,7 @@ export const ConfirmModal = ({ data }: Props) => {
                                 text-base font-semibold w-[280px] h-[64px]"
 							onClick={() => setOldFilter()}
 						>
-							Use old filter
+							{t('confirmModal.useOldFilter')}
 						</button>
 					</li>
 					<li>
@@ -69,7 +72,7 @@ export const ConfirmModal = ({ data }: Props) => {
 							className="bg-[#FF5F00] text-white text-base font-semibold w-[280px] h-[64px] rounded-2xl"
 							onClick={() => setNewfilters()}
 						>
-							Apply new filter
+							{t('confirmModal.applyNewFilter')}
 						</button>
 					</li>
 				</ul>

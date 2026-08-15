@@ -45,7 +45,7 @@
 		"parking": "Parking",
 		"conferenceRooms": "Conference rooms",
 		"ecoResponsibility": "Eco-responsibility",
-		"amenitiesForPeopleWithDisabilities": "Room facilities for people with disabilities",
+		"amenitiesForPeopleWithDisabilities": "Amenities for people with disabilities",
 		"entranceWithoutSteps": "Entrance without steps",
 		"entrance81CmWide": "Entrance 81 cm wide",
 		"availabilityOfRamp": "Availability of a ramp",
@@ -86,5 +86,13 @@
 		"cancellationOneWeekFree": "Free cancellation one week before check-in",
 		"cancellationThreeDaysFree": "Free cancellation up to 3 days before check-in",
 		"cancellationNotAllowed": "No possibility of cancellation"
+	},
+	"confirmModal": {
+		"applyNewFilter": "Apply new filter",
+		"useOldFilter": "Use old filter",
+		"requestConfirmNewFilter": "Do you want to apply new filter"
+	},
+	"mainPage": {
+		"titleButton": "WinWinTravel frontend test task"
 	}
 }
