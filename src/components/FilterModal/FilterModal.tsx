@@ -1,14 +1,17 @@
+import { useRef } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { FilterType } from '@shared/api/types/Filter'
-import { SearchRequestFilter } from '@shared/api/types/SearchRequest/SearchRequestFilter'
+import { useMutation, useQuery } from '@tanstack/react-query'
 
+import { queryClient } from '@/query'
+import { FilterType } from '@/shared/api/types/Filter'
+import { SearchRequestFilter } from '@/shared/api/types/SearchRequest/SearchRequestFilter'
 import {
-	selectFilters,
 	selectResetFilters,
 	selectSetFilters,
+	selectSetModalState,
 	useFilterStore
-} from '@stores/filterStore'
+} from '@/stores/filterStore'
 
 export const FilterModal = () => {
 	const { t } = useTranslation('filter')
@@ -17,9 +20,11 @@ export const FilterModal = () => {
 	const labelTwoColls = 'flex w-1/2'
 	const legentClass = 'mb-6'
 	const inputClass = 'me-4'
-	const currentFilters = useFilterStore(selectFilters)
+
 	const setFilters = useFilterStore(selectSetFilters)
 	const resetFilters = useFilterStore(selectResetFilters)
+	const setIsModalOpen = useFilterStore(selectSetModalState)
+
 	const formHandler = (values: FormData) => {
 		const uniqueKeys = Array.from(new Set(values.keys()))
 
@@ -31,11 +36,36 @@ export const FilterModal = () => {
 			}))
 			.filter(filterItem => filterItem.optionsIds.length > 0)
 
+		console.log(data)
 		setFilters(data)
+
+		queryClient.setQueryData(['filters'], data)
+
+		setIsModalOpen(false)
 	}
 
+	const formRef = useRef<HTMLFormElement>(null)
+
+	const resetForm = () => {
+		resetFilters()
+		formRef.current?.reset()
+	}
+
+	const { data: currentFilters } = useQuery({
+		queryKey: ['filters'],
+		queryFn: async () => useFilterStore.getState().filters
+	})
+
+	const { mutate: clearFilters } = useMutation({
+		mutationFn: async () => [],
+		onSuccess() {
+			resetForm()
+			queryClient.setQueryData(['filters'], [])
+		}
+	})
+
 	const isChecked = (groupId: string, optionId: string): boolean => {
-		const value = currentFilters.find(item => item.id === groupId)
+		const value = currentFilters?.find(item => item.id === groupId)
 		return value ? value.optionsIds.includes(optionId) : false
 	}
 
@@ -46,6 +76,7 @@ export const FilterModal = () => {
 					{t('filterModal.filter')}
 				</h2>
 				<form
+					ref={formRef}
 					className="mx-8"
 					action={formHandler}
 				>
@@ -875,6 +906,7 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="payment"
+								defaultChecked={isChecked('payment', 'paymentInCash')}
 								value="paymentInCash"
 								className={inputClass}
 							/>
@@ -884,6 +916,7 @@ export const FilterModal = () => {
 							<input
 								type="checkbox"
 								name="payment"
+								defaultChecked={isChecked('payment', 'paymentByCard')}
 								value="paymentByCard"
 								className={inputClass}
 							/>
@@ -939,7 +972,7 @@ export const FilterModal = () => {
 						</button>
 						<button
 							type="button"
-							onClick={() => resetFilters()}
+							onClick={() => clearFilters()}
 							className="text-[#078691] text-[16px] font-medium decoration-solid hover:cursor-pointer"
 						>
 							{t('filterModal.clearAll')}
