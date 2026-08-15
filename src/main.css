@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 body {
-	background-color: rgb(116, 110, 101);
+	font-family: 'Inter', sans-serif;
+	font-size: 16px;
 }

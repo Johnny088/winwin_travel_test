@@ -1,699 +1,952 @@
+import { useTranslation } from 'react-i18next'
+
+import { FilterType } from '@shared/api/types/Filter'
+import { SearchRequestFilter } from '@shared/api/types/SearchRequest/SearchRequestFilter'
+
+import {
+	selectFilters,
+	selectResetFilters,
+	selectSetFilters,
+	useFilterStore
+} from '@stores/filterStore'
+
 export const FilterModal = () => {
+	const { t } = useTranslation('filter')
 	const fieldsetClass = 'border-b pb-6 mb-8 flex flex-wrap gap-y-4'
 	const labelClass = 'flex w-1/3'
+	const labelTwoColls = 'flex w-1/2'
 	const legentClass = 'mb-6'
 	const inputClass = 'me-4'
+	const currentFilters = useFilterStore(selectFilters)
+	const setFilters = useFilterStore(selectSetFilters)
+	const resetFilters = useFilterStore(selectResetFilters)
 	const formHandler = (values: FormData) => {
-		const preminaryFilters = values.getAll('preliminaryFilter')
-		const popularFilters = values.getAll('popularFilters')
-		const amenitiesBase = values.getAll('amenities')
-		const amenitiesDisabilities = values.getAll('amenitiesDisabilities')
-		const roomFacilities = values.getAll('roomFacilities')
-		const nutrition = values.getAll('nutrition')
-		const reservation = values.getAll('reservation')
-		const prepayment = values.getAll('prepayment')
-		const payment = values.getAll('payment')
-		const specialOffers = values.getAll('specialOffers')
+		const uniqueKeys = Array.from(new Set(values.keys()))
+
+		const data: SearchRequestFilter = uniqueKeys
+			.map(id => ({
+				id,
+				type: FilterType.OPTION,
+				optionsIds: values.getAll(id) as string[]
+			}))
+			.filter(filterItem => filterItem.optionsIds.length > 0)
+
+		setFilters(data)
 	}
+
+	const isChecked = (groupId: string, optionId: string): boolean => {
+		const value = currentFilters.find(item => item.id === groupId)
+		return value ? value.optionsIds.includes(optionId) : false
+	}
+
 	return (
-		<div className="flex flex-col w-7xl p-8 m-auto">
-			<h1 className="text-center border-b pb-6 mb-8 mx-8">Filter</h1>
-			<form
-				className="mx-8"
-				action={formHandler}
-			>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>Preliminary filter</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="preliminaryFilter"
-							value="Distance to the center 1 km"
-							className={inputClass}
-						/>
-						Distance to the center 1 km
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="preliminaryFilter"
-							value="guestRating 9+"
-							className={inputClass}
-						/>
-						Guest rating 9+
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="preliminaryFilter"
-							value="hotels"
-							className={inputClass}
-						/>
-						Hotels
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="preliminaryFilter"
-							value="Distance to the center 3 km"
-							className={inputClass}
-						/>
-						Distance to the center 3 km
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="preliminaryFilter"
-							value="5 stars"
-							className={inputClass}
-						/>
-						5 stars
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="preliminaryFilter"
-							value="Breakfast is included"
-							className={inputClass}
-						/>
-						Breakfast is included
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>Popular filters</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="popularFilters"
-							value="5 stars"
-							className={inputClass}
-						/>
-						5 stars
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="popularFilters"
-							value="Breakfast is included"
-							className={inputClass}
-						/>
-						Breakfast is included
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="popularFilters"
-							value="Free booking"
-							className={inputClass}
-						/>
-						Free booking
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="popularFilters"
-							value="4 stars"
-							className={inputClass}
-						/>
-						4 stars
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="popularFilters"
-							value="Distance to the center 3 km"
-							className={inputClass}
-						/>
-						Free booking
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="popularFilters"
-							value="Guest rating 8+"
-							className={inputClass}
-						/>
-						Free booking
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>
-						Amenities of the accommodation facility
-					</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Transfer to/from the hotel"
-							className={inputClass}
-						/>
-						Transfer to/from the hotel
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Breakfast included"
-							className={inputClass}
-						/>
-						Breakfast included
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Smoking area"
-							className={inputClass}
-						/>
-						Smoking area
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Round-the-clock reception"
-							className={inputClass}
-						/>
-						Round-the-clock reception
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Restaurant"
-							className={inputClass}
-						/>
-						Restaurant
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Children's playground"
-							className={inputClass}
-						/>
-						Children's playground
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Early check-in"
-							className={inputClass}
-						/>
-						Early check-in
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Swimming pool"
-							className={inputClass}
-						/>
-						Swimming pool
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Internet"
-							className={inputClass}
-						/>
-						Internet
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Late check-in"
-							className={inputClass}
-						/>
-						Late check-in
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Spa center/sauna"
-							className={inputClass}
-						/>
-						Spa center/sauna
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Security"
-							className={inputClass}
-						/>
-						Security
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Pets are allowed"
-							className={inputClass}
-						/>
-						Pets are allowed
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Gym/fitness room"
-							className={inputClass}
-						/>
-						Gym/fitness room
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Lift"
-							className={inputClass}
-						/>
-						Lift
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Parking"
-							className={inputClass}
-						/>
-						Parking
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Conference rooms"
-							className={inputClass}
-						/>
-						Conference rooms
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenities"
-							value="Eco-responsibility"
-							className={inputClass}
-						/>
-						Eco-responsibility
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>
-						Amenities for people with disabilities
-					</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenitiesDisabilities"
-							value="Entrance without steps"
-							className={inputClass}
-						/>
-						Entrance without steps
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenitiesDisabilities"
-							value="Parking"
-							className={inputClass}
-						/>
-						Parking
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenitiesDisabilities"
-							value="Lift"
-							className={inputClass}
-						/>
-						Lift
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenitiesDisabilities"
-							value="Entrance 81 cm wide"
-							className={inputClass}
-						/>
-						Entrance 81 cm wide
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenitiesDisabilities"
-							value="Availability of a ramp"
-							className={inputClass}
-						/>
-						Availability of a ramp
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="amenitiesDisabilities"
-							value="Handrails"
-							className={inputClass}
-						/>
-						Handrails
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>Room facilities</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Bath"
-							className={inputClass}
-						/>
-						Bath
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Kitchen"
-							className={inputClass}
-						/>
-						Kitchen
-					</label>
-					<label>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Underfloor heating"
-							className={inputClass}
-						/>
-						Underfloor heating
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Shower"
-							className={inputClass}
-						/>
-						Shower
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Air Conditioning"
-							className={inputClass}
-						/>
-						Air Conditioning
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Pets allowed"
-							className={inputClass}
-						/>
-						Pets allowed
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Coffee machine"
-							className={inputClass}
-						/>
-						Coffee machine
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Iron"
-							className={inputClass}
-						/>
-						Iron
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Baby bed"
-							className={inputClass}
-						/>
-						Baby bed
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Kettle"
-							className={inputClass}
-						/>
-						Kettle
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Internet"
-							className={inputClass}
-						/>
-						Internet
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Balcony"
-							className={inputClass}
-						/>
-						Balcony
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Fridge"
-							className={inputClass}
-						/>
-						Fridge
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="roomFacilities"
-							value="Workplace"
-							className={inputClass}
-						/>
-						Workplace
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>Nutrition</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="nutrition"
-							value="Room without meals"
-							className={inputClass}
-						/>
-						Room without meals
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="nutrition"
-							value="Breakfast and dinner"
-							className={inputClass}
-						/>
-						Breakfast and dinner
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="nutrition"
-							value="All inclusive"
-							className={inputClass}
-						/>
-						All inclusive
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="nutrition"
-							value="Breakfast included"
-							className={inputClass}
-						/>
-						Breakfast included
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="nutrition"
-							value="Breakfast, lunch, dinner"
-							className={inputClass}
-						/>
-						Breakfast, lunch, dinner
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="nutrition"
-							value="Ultra all inclusive"
-							className={inputClass}
-						/>
-						Ultra all inclusive
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>
-						Reservation cancellation policy
-					</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="reservation"
-							value="Free cancellation before check-in"
-							className={inputClass}
-						/>
-						Free cancellation before check-in
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="reservation"
-							value="Free cancellation one week before check-in"
-							className={inputClass}
-						/>
-						Free cancellation one week before check-in
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="reservation"
-							value="Free cancellation up to 3 days before check-in"
-							className={inputClass}
-						/>
-						Free cancellation up to 3 days before check-in
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="reservation"
-							value="No possibility of cancellation"
-							className={inputClass}
-						/>
-						No possibility of cancellation
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>Prepayment</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="prepayment"
-							value="Booking without a credit card"
-							className={inputClass}
-						/>
-						Booking without a credit card
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="prepayment"
-							value="Partial prepayment"
-							className={inputClass}
-						/>
-						Partial prepayment
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="prepayment"
-							value="Booking without prepayment"
-							className={inputClass}
-						/>
-						Booking without prepayment
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="prepayment"
-							value="Full prepayment"
-							className={inputClass}
-						/>
-						Full prepayment
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>Form of payment</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="payment"
-							value="Payment in cash"
-							className={inputClass}
-						/>
-						Payment in cash
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="payment"
-							value="Payment by card"
-							className={inputClass}
-						/>
-						Payment by card
-					</label>
-				</fieldset>
-				<fieldset className={fieldsetClass}>
-					<legend className={legentClass}>Special offers and discounts</legend>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="specialOffers"
-							value="Discounts of 50%"
-							className={inputClass}
-						/>
-						Discounts of 50%
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="specialOffers"
-							value="Hot offers"
-							className={inputClass}
-						/>
-						Hot offers
-					</label>
-					<label className={labelClass}>
-						<input
-							type="checkbox"
-							name="specialOffers"
-							value="Cheap options for relocation"
-							className={inputClass}
-						/>
-						Cheap options for relocation
-					</label>
-				</fieldset>
-				<div className="flex">
-					<button
-						className=" ms-137 me-100"
-						type="submit"
-					>
-						Apply
-					</button>
-					<button
-						type="button"
-						onClick={() => {}}
-					>
-						Clear all parameters
-					</button>
-				</div>
-			</form>
+		<div className="flex justify-center fixed z-50 overflow-y-auto inset-0 backdrop-blur-sm">
+			<div className="flex flex-col w-7xl p-8  rounded-2xl mt-20  absolute bg-white">
+				<h2 className="text-center border-b pb-6 mb-8 mx-8">
+					{t('filterModal.filter')}
+				</h2>
+				<form
+					className="mx-8"
+					action={formHandler}
+				>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.preliminaryFilter')}
+						</legend>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="preliminaryFilter"
+								defaultChecked={isChecked('preliminaryFilter', 'dist1km')}
+								value="dist1km"
+								className={inputClass}
+							/>
+							{t('filterModal.distanceToCenter1km')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="preliminaryFilter"
+								defaultChecked={isChecked('preliminaryFilter', 'rating9+')}
+								value="rating9+"
+								className={inputClass}
+							/>
+							{t('filterModal.guestrating9Plus')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="preliminaryFilter"
+								defaultChecked={isChecked('preliminaryFilter', 'hotels')}
+								value="hotels"
+								className={inputClass}
+							/>
+							{t('filterModal.hotels')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="preliminaryFilter"
+								defaultChecked={isChecked('preliminaryFilter', 'dist3km')}
+								value="dist3km"
+								className={inputClass}
+							/>
+							{t('filterModal.distanceToCenter3km')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="preliminaryFilter"
+								defaultChecked={isChecked('preliminaryFilter', 'fiveStars')}
+								value="fiveStars"
+								className={inputClass}
+							/>
+							{t('filterModal.fiveStars')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="preliminaryFilter"
+								defaultChecked={isChecked('preliminaryFilter', 'hasBreakfast')}
+								value="hasBreakfast"
+								className={inputClass}
+							/>
+							{t('filterModal.breakfastIsIncluded')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.popularFilters')}
+						</legend>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="popularFilters"
+								defaultChecked={isChecked('popularFilters', 'fiveStars')}
+								value="fiveStars"
+								className={inputClass}
+							/>
+							{t('filterModal.fiveStars')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="popularFilters"
+								defaultChecked={isChecked('popularFilters', 'hasBreakfast')}
+								value="hasBreakfast"
+								className={inputClass}
+							/>
+							{t('filterModal.breakfastIsIncluded')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="popularFilters"
+								defaultChecked={isChecked('popularFilters', 'freeBooking')}
+								value="freeBooking"
+								className={inputClass}
+							/>
+							{t('filterModal.freeBooking')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="popularFilters"
+								defaultChecked={isChecked('popularFilters', 'fourStars')}
+								value="fourStars"
+								className={inputClass}
+							/>
+							{t('filterModal.fourStars')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="popularFilters"
+								defaultChecked={isChecked('popularFilters', '4stars')}
+								value="dist_3km"
+								className={inputClass}
+							/>
+							{t('filterModal.distanceToCenter3km')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="popularFilters"
+								defaultChecked={isChecked('popularFilters', 'rating8+')}
+								value="rating8+"
+								className={inputClass}
+							/>
+							{t('filterModal.guestRatingEightPlus')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.amenitiesOfTheAccommodationFacility')}
+						</legend>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'hasTransfer')}
+								value="hasTransfer"
+								className={inputClass}
+							/>
+							{t('filterModal.transferToFromTheHotel')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'hasBreakfast')}
+								value="hasBreakfast"
+								className={inputClass}
+							/>
+							{t('filterModal.breakfastIncluded')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'SmokingArea')}
+								value="SmokingArea"
+								className={inputClass}
+							/>
+							{t('filterModal.smokingArea')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', '24hReception')}
+								value="24hReception"
+								className={inputClass}
+							/>
+							{t('filterModal.roundTheClockReception')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'restaurant')}
+								value="restaurant"
+								className={inputClass}
+							/>
+							{t('filterModal.restaurant')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'kidsPlayground')}
+								value="kidsPlayground"
+								className={inputClass}
+							/>
+							{t('filterModal.kidsPlayground')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'earlyCheckIn')}
+								value="earlyCheckIn"
+								className={inputClass}
+							/>
+							{t('filterModal.earlyCheckIn')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'swimmingPool')}
+								value="swimmingPool"
+								className={inputClass}
+							/>
+							{t('filterModal.swimmingPool')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'internet')}
+								value="internet"
+								className={inputClass}
+							/>
+							{t('filterModal.internet')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'lateCheckIn')}
+								value="lateCheckIn"
+								className={inputClass}
+							/>
+							{t('filterModal.lateCheckIn')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'spa')}
+								value="spa"
+								className={inputClass}
+							/>
+							{t('filterModal.spa')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'security')}
+								value="security"
+								className={inputClass}
+							/>
+							{t('filterModal.security')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'isPetsAllowed')}
+								value="isPetsAllowed"
+								className={inputClass}
+							/>
+							{t('filterModal.petsAreAllowed')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'gym')}
+								value="gym"
+								className={inputClass}
+							/>
+							{t('filterModal.gym')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'lift')}
+								value="lift"
+								className={inputClass}
+							/>
+							{t('filterModal.lift')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'parking')}
+								value="parking"
+								className={inputClass}
+							/>
+							{t('filterModal.parking')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'conferenceRooms')}
+								value="conferenceRooms"
+								className={inputClass}
+							/>
+							{t('filterModal.conferenceRooms')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenities"
+								defaultChecked={isChecked('amenities', 'ecoResponsibility')}
+								value="ecoResponsibility"
+								className={inputClass}
+							/>
+							{t('filterModal.ecoResponsibility')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.amenitiesForPeopleWithDisabilities')}
+						</legend>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenitiesDisabilities"
+								defaultChecked={isChecked(
+									'amenitiesDisabilities',
+									'entranceWithoutSteps'
+								)}
+								value="entranceWithoutSteps"
+								className={inputClass}
+							/>
+							{t('filterModal.entranceWithoutSteps')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenitiesDisabilities"
+								defaultChecked={isChecked('amenitiesDisabilities', 'parking')}
+								value="parking"
+								className={inputClass}
+							/>
+							{t('filterModal.parking')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenitiesDisabilities"
+								defaultChecked={isChecked('amenitiesDisabilities', 'lift')}
+								value="lift"
+								className={inputClass}
+							/>
+							{t('filterModal.lift')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenitiesDisabilities"
+								defaultChecked={isChecked(
+									'amenitiesDisabilities',
+									'EntranceEightyOnewide'
+								)}
+								value="EntranceEightyOnewide"
+								className={inputClass}
+							/>
+							{t('filterModal.entrance81CmWide')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenitiesDisabilities"
+								defaultChecked={isChecked('amenitiesDisabilities', 'ramp')}
+								value="ramp"
+								className={inputClass}
+							/>
+							{t('filterModal.availabilityOfRamp')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="amenitiesDisabilities"
+								defaultChecked={isChecked('amenitiesDisabilities', 'handrails')}
+								value="handrails"
+								className={inputClass}
+							/>
+							{t('filterModal.handrails')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.roomFacilities')}
+						</legend>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'bath')}
+								value="bath"
+								className={inputClass}
+							/>
+							{t('filterModal.bath')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'kitchen')}
+								value="kitchen"
+								className={inputClass}
+							/>
+							{t('filterModal.kitchen')}
+						</label>
+						<label>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked(
+									'roomFacilities',
+									'underfloorHeating'
+								)}
+								value="underfloorHeating"
+								className={inputClass}
+							/>
+							{t('filterModal.underfloorHeating')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'shower')}
+								value="shower"
+								className={inputClass}
+							/>
+							{t('filterModal.shower')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'airConditioning')}
+								value="airConditioning"
+								className={inputClass}
+							/>
+							{t('filterModal.airConditioning')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'petsAllowed')}
+								value="petsAllowed"
+								className={inputClass}
+							/>
+							{t('filterModal.petsAllowedSecondOption')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'coffeeMachine')}
+								value="coffeeMachine"
+								className={inputClass}
+							/>
+							{t('filterModal.coffeeMachine')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'iron')}
+								value="iron"
+								className={inputClass}
+							/>
+							{t('filterModal.iron')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'babyBed')}
+								value="babyBed"
+								className={inputClass}
+							/>
+							{t('filterModal.babyBed')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'kettle')}
+								value="kettle"
+								className={inputClass}
+							/>
+							{t('filterModal.kettle')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'internet')}
+								value="internet"
+								className={inputClass}
+							/>
+							{t('filterModal.internet')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'balcony')}
+								value="balcony"
+								className={inputClass}
+							/>
+							{t('filterModal.balcony')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'fridge')}
+								value="fridge"
+								className={inputClass}
+							/>
+							{t('filterModal.fridge')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomFacilities"
+								defaultChecked={isChecked('roomFacilities', 'workplace')}
+								value="workplace"
+								className={inputClass}
+							/>
+							{t('filterModal.workplace')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.roomForPeopleWithDisabilities')}
+						</legend>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'entranceWide81'
+								)}
+								value="entranceWide81"
+								className={inputClass}
+							/>
+							{t('filterModal.entranceWide81')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'handrailInShower'
+								)}
+								value="handrailInShower"
+								className={inputClass}
+							/>
+							{t('filterModal.handrailInShower')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'highToiletBowl'
+								)}
+								value="highToiletBowl"
+								className={inputClass}
+							/>
+							{t('filterModal.highToiletBowl')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked('roomWithDisabilities', 'doorWide81')}
+								value="doorWide81"
+								className={inputClass}
+							/>
+							{t('filterModal.doorWide81')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'showerChair'
+								)}
+								value="showerChair"
+								className={inputClass}
+							/>
+							{t('filterModal.showerChair')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'emergencyCord'
+								)}
+								value="emergencyCord"
+								className={inputClass}
+							/>
+							{t('filterModal.emergencyCord')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'handrailNearToilet'
+								)}
+								value="handrailNearToilet"
+								className={inputClass}
+							/>
+							{t('filterModal.handrailNearToilet')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'lowWashbasin'
+								)}
+								value="lowWashbasin"
+								className={inputClass}
+							/>
+							{t('filterModal.lowWashbasin')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="roomWithDisabilities"
+								defaultChecked={isChecked(
+									'roomWithDisabilities',
+									'emergencyCordBedside'
+								)}
+								value="emergencyCordBedside"
+								className={inputClass}
+							/>
+							{t('filterModal.emergencyCordBedside')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.nutrition')}
+						</legend>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="nutrition"
+								defaultChecked={isChecked('nutrition', 'withoutMeal')}
+								value="withoutMeal"
+								className={inputClass}
+							/>
+							{t('filterModal.roomWithoutMeals')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="nutrition"
+								defaultChecked={isChecked('nutrition', 'BreakfastAndDinner')}
+								value="BreakfastAndDinner"
+								className={inputClass}
+							/>
+							{t('filterModal.breakfastAndDinner')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="nutrition"
+								defaultChecked={isChecked('nutrition', 'allInclusive')}
+								value="allInclusive"
+								className={inputClass}
+							/>
+							{t('filterModal.allInclusive')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="nutrition"
+								defaultChecked={isChecked('nutrition', 'breakfastIncluded')}
+								value="breakfastIncluded"
+								className={inputClass}
+							/>
+							{t('filterModal.breakfastIncluded')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="nutrition"
+								defaultChecked={isChecked('nutrition', 'BreakfastLunchDinner')}
+								value="BreakfastLunchDinner"
+								className={inputClass}
+							/>
+							{t('filterModal.breakfastLunchDinner')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="nutrition"
+								defaultChecked={isChecked('nutrition', 'ultraAllInclusive')}
+								value="ultraAllInclusive"
+								className={inputClass}
+							/>
+							{t('filterModal.ultraAllInclusive')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.reservationCancellationPolicy')}
+						</legend>
+						<label className={labelTwoColls}>
+							<input
+								type="checkbox"
+								name="reservation"
+								defaultChecked={isChecked('reservation', 'cancellationFree')}
+								value="cancellationFree"
+								className={inputClass}
+							/>
+							{t('filterModal.cancellationFree')}
+						</label>
+						<label className={labelTwoColls}>
+							<input
+								type="checkbox"
+								name="reservation"
+								defaultChecked={isChecked(
+									'reservation',
+									'cancellationOneWeekFree'
+								)}
+								value="cancellationOneWeekFree"
+								className={inputClass}
+							/>
+							{t('filterModal.cancellationOneWeekFree')}
+						</label>
+						<label className={labelTwoColls}>
+							<input
+								type="checkbox"
+								name="reservation"
+								defaultChecked={isChecked(
+									'reservation',
+									'cancellationThreeDaysFree'
+								)}
+								value="cancellationThreeDaysFree"
+								className={inputClass}
+							/>
+							{t('filterModal.cancellationThreeDaysFree')}
+						</label>
+						<label className={labelTwoColls}>
+							<input
+								type="checkbox"
+								name="reservation"
+								defaultChecked={isChecked(
+									'reservation',
+									'cancellationNotAllowed'
+								)}
+								value="cancellationNotAllowed"
+								className={inputClass}
+							/>
+							{t('filterModal.cancellationNotAllowed')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{t('filterModal.prepayment')}
+						</legend>
+						<label className={labelTwoColls}>
+							<input
+								type="checkbox"
+								name="prepayment"
+								defaultChecked={isChecked('prepayment', 'withoutCreditCard')}
+								value="withoutCreditCard"
+								className={inputClass}
+							/>
+							{t('filterModal.bookingWithoutCreditCard')}
+						</label>
+						<label className={labelTwoColls}>
+							<input
+								type="checkbox"
+								name="prepayment"
+								defaultChecked={isChecked('prepayment', 'partialPrepayment')}
+								value="partialPrepayment"
+								className={inputClass}
+							/>
+							{t('filterModal.partialPrepayment')}
+						</label>
+						<label className={labelTwoColls}>
+							<input
+								type="checkbox"
+								name="prepayment"
+								defaultChecked={isChecked('prepayment', 'withoutPrepayment')}
+								value="withoutPrepayment"
+								className={inputClass}
+							/>
+							{t('filterModal.bookingWithoutPrepayment')}
+						</label>
+						<label className={labelTwoColls}>
+							<input
+								type="checkbox"
+								name="prepayment"
+								defaultChecked={isChecked('prepayment', 'fullPrepayment')}
+								value="fullPrepayment"
+								className={inputClass}
+							/>
+							{t('filterModal.fullPrepayment')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{' '}
+							{t('filterModal.formOfPayment')}
+						</legend>
+						<label className="w-full">
+							<input
+								type="checkbox"
+								name="payment"
+								value="paymentInCash"
+								className={inputClass}
+							/>
+							{t('filterModal.paymentInCash')}
+						</label>
+						<label className="w-full">
+							<input
+								type="checkbox"
+								name="payment"
+								value="paymentByCard"
+								className={inputClass}
+							/>
+							{t('filterModal.paymentByCard')}
+						</label>
+					</fieldset>
+					<fieldset className={fieldsetClass}>
+						<legend className={legentClass}>
+							{' '}
+							{t('filterModal.specialOffersAndDiscounts')}
+						</legend>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="specialOffers"
+								defaultChecked={isChecked(
+									'specialOffers',
+									'discountsFiftyPersents'
+								)}
+								value="discountsFiftyPersents"
+								className={inputClass}
+							/>
+							{t('filterModal.discountsFiftyPersents')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="specialOffers"
+								defaultChecked={isChecked('specialOffers', 'hotOffers')}
+								value="hotOffers"
+								className={inputClass}
+							/>
+							{t('filterModal.hotOffers')}
+						</label>
+						<label className={labelClass}>
+							<input
+								type="checkbox"
+								name="specialOffers"
+								defaultChecked={isChecked('specialOffers', 'cheapRelocation')}
+								value="cheapRelocation"
+								className={inputClass}
+							/>
+							{t('filterModal.cheapOptionsForRelocation')}
+						</label>
+					</fieldset>
+					<div className="flex">
+						<button
+							className="ms-96 me-100 px-17 py-6 bg-[#FF5F00] text-white rounded-2xl font-['Inter'] font-semibold
+							text-[16px] hover:cursor-pointer hover:bg-amber-500 duration-300"
+							type="submit"
+						>
+							{t('filterModal.apply')}
+						</button>
+						<button
+							type="button"
+							onClick={() => resetFilters()}
+							className="text-[#078691] text-[16px] font-medium decoration-solid hover:cursor-pointer"
+						>
+							{t('filterModal.clearAll')}
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	)
 }
