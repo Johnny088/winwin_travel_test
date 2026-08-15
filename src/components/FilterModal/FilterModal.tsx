@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { useMutation, useQuery } from '@tanstack/react-query'
@@ -7,11 +7,17 @@ import { queryClient } from '@/query'
 import { FilterType } from '@/shared/api/types/Filter'
 import { SearchRequestFilter } from '@/shared/api/types/SearchRequest/SearchRequestFilter'
 import {
+	selectIsConfirmModalOpen,
 	selectResetFilters,
+	selectSetConfirmModalState,
 	selectSetFilters,
 	selectSetModalState,
+	selectSetTempFilters,
+	selectTempFilters,
 	useFilterStore
 } from '@/stores/filterStore'
+
+import { ConfirmModal } from '../ConfirmModal/ConfirmModal'
 
 export const FilterModal = () => {
 	const { t } = useTranslation('filter')
@@ -21,9 +27,16 @@ export const FilterModal = () => {
 	const legentClass = 'mb-6'
 	const inputClass = 'me-4'
 
+	const [tempFilters, setTempFilters] = useState<SearchRequestFilter | []>([])
+
 	const setFilters = useFilterStore(selectSetFilters)
 	const resetFilters = useFilterStore(selectResetFilters)
 	const setIsModalOpen = useFilterStore(selectSetModalState)
+
+	const isConfirmModalOpen = useFilterStore(selectIsConfirmModalOpen)
+	const setConfirmModal = useFilterStore(selectSetConfirmModalState)
+	// const tempFilters = useFilterStore(selectTempFilters)
+	// const setTempFilters = useFilterStore(selectSetTempFilters)
 
 	const formHandler = (values: FormData) => {
 		const uniqueKeys = Array.from(new Set(values.keys()))
@@ -36,12 +49,14 @@ export const FilterModal = () => {
 			}))
 			.filter(filterItem => filterItem.optionsIds.length > 0)
 
-		console.log(data)
-		setFilters(data)
+		// console.log(data)
+		// setFilters(data)
 
-		queryClient.setQueryData(['filters'], data)
+		setTempFilters(data)
+		setConfirmModal(true)
+		// queryClient.setQueryData(['filters'], data)
 
-		setIsModalOpen(false)
+		// setIsModalOpen(false)
 	}
 
 	const formRef = useRef<HTMLFormElement>(null)
@@ -69,9 +84,20 @@ export const FilterModal = () => {
 		return value ? value.optionsIds.includes(optionId) : false
 	}
 
+	useEffect(() => {
+		const keyDownHandler = (event: KeyboardEvent) => {
+			if (event.code === 'Escape') {
+				setIsModalOpen(false)
+			}
+		}
+		document.addEventListener('keydown', keyDownHandler)
+
+		return () => document.removeEventListener('keydown', keyDownHandler)
+	}, [])
+
 	return (
-		<div className="flex justify-center fixed z-50 overflow-y-auto inset-0 backdrop-blur-sm">
-			<div className="flex flex-col w-7xl p-8  rounded-2xl mt-20  absolute bg-white">
+		<div className="flex justify-center fixed z-50 overflow-y-auto inset-0 backdrop-blur-xl bg-black/25">
+			<div className="flex flex-col w-7xl  p-8  rounded-2xl mt-20  absolute bg-white">
 				<h2 className="text-center border-b pb-6 mb-8 mx-8">
 					{t('filterModal.filter')}
 				</h2>
@@ -979,6 +1005,7 @@ export const FilterModal = () => {
 						</button>
 					</div>
 				</form>
+				{isConfirmModalOpen && <ConfirmModal data={tempFilters} />}
 			</div>
 		</div>
 	)
